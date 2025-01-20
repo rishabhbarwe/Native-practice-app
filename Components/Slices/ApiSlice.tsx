@@ -3,6 +3,7 @@ import { createSlice,createAsyncThunk } from "@reduxjs/toolkit";
 import { fetchData } from "../API/EmojiApi";
 
 
+
 const emojisSlice = createSlice({
     name : 'emojis',
     initialState : {

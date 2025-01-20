@@ -50,7 +50,7 @@ const  { data, loading, error } = useSelector((state) => state.emojis);
             <View style={styles.card}>
              <View style={styles.nameandflower}>
              <Text style={styles.emojiName}>Name: {item.name}</Text>
-             <Text style={styles.emojiCharacter}>{item.htmlCode.map((code) => (
+             <Text style={styles.emojiCharacter}>{item.htmlCode.map((code: string) => (
                 <Text style={{ fontSize: 50 }}>{String.fromCodePoint(parseInt(code.replace("&#", "").replace(";", ""), 10))}</Text>
               ))}</Text>
               

@@ -8,13 +8,14 @@ import AboutUs from '../DrawerScreens/AboutUs';
 import { DrawerParamList } from '../DrawerScreens/DrawerNavigations';
 import { DrawerScreenProps } from '@react-navigation/drawer';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-
+import Posts from './Posts';
 
 export type TabParamList = {
   Home: { name: string };
   Profile: { name: string };
   Setting: { name: string };
   About: { name: string };
+  posts : {name : string}
 };
 
 
@@ -35,7 +36,7 @@ const TabBarNavigation: React.FC<TabBarNavigationTypes> = ({ route }) => {
           ),
           tabBarLabelStyle: { fontSize: 18, fontWeight: '500' },
           
-          tabBarActiveTintColor: '#c8b6ff',
+          tabBarActiveTintColor: '#99d98c',
           
         }}></Tab.Screen>
       <Tab.Screen name="Profile" component={Profile} initialParams={{ name: user }} options={{
@@ -43,22 +44,29 @@ const TabBarNavigation: React.FC<TabBarNavigationTypes> = ({ route }) => {
           <Ionicons name="person-circle-outline" size={30} color={focus.focused ? '#c8b6ff' : '#ffffff'}/>
         ), tabBarLabelStyle: { fontSize: 18, fontWeight: '500' },
        
-        tabBarActiveTintColor: '#c8b6ff',
+        tabBarActiveTintColor: '#99d98c',
       }}></Tab.Screen>
+       <Tab.Screen name="posts" component={Posts} initialParams={{ name: user }} options={{
+        tabBarIcon : (focus) => <Ionicons name="duplicate" size={32} color={focus.focused ? '#c8b6ff' : '#ffffff'}></Ionicons>,
+        tabBarLabelStyle: { fontSize: 18, fontWeight: '500' },
+       
+        tabBarActiveTintColor: '#99d98c',
+       }}></Tab.Screen>
       <Tab.Screen name="Setting" component={Settings} initialParams={{ name: user }} options={{
         tabBarIcon: (focus) => (
-          <Ionicons name="build-outline" size={30} color={focus.focused ? '#c8b6ff' : '#ffffff'}/>
+          <Ionicons name="settings" size={30} color={focus.focused ? '#c8b6ff' : '#ffffff'}/>
         ),
         tabBarLabelStyle: { fontSize: 18, fontWeight: '500' },
-        tabBarActiveTintColor: '#c8b6ff',
+        tabBarActiveTintColor: '#99d98c',
       }}></Tab.Screen>
       <Tab.Screen name="About" component={AboutUs} initialParams={{ name: user }} options={{
         tabBarIcon: (focus) => (
           <Ionicons name="ellipsis-vertical-circle-outline" size={30} color={focus.focused ? '#c8b6ff' : '#ffffff'}/>
-        ), tabBarActiveTintColor: '#c8b6ff',
+        ), tabBarActiveTintColor: '#99d98c',
         tabBarLabelStyle: { fontSize: 18, fontWeight: '500' },
        
       }}></Tab.Screen>
+     
 
     </Tab.Navigator>
   )

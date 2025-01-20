@@ -5,7 +5,7 @@ export const fetchData = createAsyncThunk('data/fetchData', async() => {
 
              const response = await fetch('https://emojihub.yurace.pro/api/all/group/plant-flower');
              const data = await response.json();
-             const sortedData = data.sort((a, b) => {
+             const sortedData = data.sort((a: { name: string; },b: { name: string; }) => {
                 
                 return a.name.localeCompare(b.name);
               });
