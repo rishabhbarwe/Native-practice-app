@@ -151,7 +151,7 @@ const HomeScreen: React.FC<HomeScreenProps> = ({route,navigation}) => {
 
                 <FlatList
                     data={dataList}
-                    renderItem={({ item }) => <Card data={item}></Card>}
+                    renderItem={({ item }) => <Card data={item}/>}
                     contentContainerStyle={styles.listContainer}
                 />
                

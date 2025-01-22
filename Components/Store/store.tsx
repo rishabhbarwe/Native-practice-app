@@ -1,7 +1,7 @@
 import { configureStore } from "@reduxjs/toolkit";
-
-import likeReducer from '../Slices/Likeslice'
 import rootReducer from "../Slices/RootSLice";
+
+export type AppDispatch = typeof store.dispatch;
 
 const store = configureStore({
     reducer : rootReducer,

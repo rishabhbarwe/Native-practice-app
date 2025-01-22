@@ -8,8 +8,9 @@ import { Header } from "react-native/Libraries/NewAppScreen";
 import { Text, TouchableOpacity, StyleSheet, Image, TouchableWithoutFeedback } from "react-native";
 import SplashScreen from "./SplashScreen";
 import DrawerNavigations from "../DrawerScreens/DrawerNavigations";
-
-
+import ForgetPasswordScreen from "./ForgetPasswordScreen";
+import LoginwithOTP from "./LoginwithOTP";
+import HomeScreen from "./HomeScreen";
 
 
 const Stack = createNativeStackNavigator<RootStackParamList>()
@@ -24,6 +25,9 @@ export type RootStackParamList = {
     "Register": undefined; // No parameters
     "Login": { username: string; password: string; name: string }; // Parameters expected
     "Drawer" : {name : string};
+    "Forget" : any;
+    "Otplogin" : any;
+    'Home' : any
   
 };
 const Mainroute: React.FC = () => {
@@ -33,7 +37,10 @@ const Mainroute: React.FC = () => {
                 <Stack.Screen name="Splash" component={SplashScreen}></Stack.Screen>
                 <Stack.Screen name="Register" component={SignUp} />
                 <Stack.Screen name="Login" component={Login}></Stack.Screen>
+                <Stack.Screen name="Forget" component={ForgetPasswordScreen}></Stack.Screen>
+                <Stack.Screen name="Otplogin" component={LoginwithOTP}></Stack.Screen>
                <Stack.Screen name="Drawer" component={DrawerNavigations} />
+               <Stack.Screen name="Home" component={HomeScreen}></Stack.Screen>
                
             </Stack.Navigator>
         </NavigationContainer>

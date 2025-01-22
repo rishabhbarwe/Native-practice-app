@@ -1,29 +1,14 @@
 import { View, Text, FlatList, StyleSheet, Image } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
+import { RootState } from '../Components/Slices/SliceTypes';
 
 
-// const Card = ()=>{
-//   return (
-
-//     <View style={styles.card}>
-
-//         <Image source={data.profilePicture} style={styles.pp}></Image>
-//         <View style={styles.outer}>
-//             <Text style={styles.text}>Name : {data.name}</Text>
-//             <Text style={styles.text}>Email : {data.email}</Text>
-//             <Text style={styles.text}>Phone : {data.phone}</Text>
-//             <Text style={styles.text}>Address : {data.address}</Text>
 
 
-//         </View>
-//     </View>
-// )
-
-// }
 
 const Settings = () => {
-    const users = useSelector((state) => state.users.users);
+    const users = useSelector((state:RootState) => state.users.users);
     const [length, setLength] = useState(0)
 
     useEffect(() => {

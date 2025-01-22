@@ -10,7 +10,7 @@ import Profile from "./Profile";
 import Settings from "./Settings";
 import AboutUs from "./AboutUs";
 import Ionicons from 'react-native-vector-icons/Ionicons';
-
+import { ProfileData } from "./Profile";
 
 
 const home = require('../assets/hut.png')
@@ -21,7 +21,7 @@ import TabBarNavigation from "../TabBarScreens/TabBarNavigation";
 
 export type DrawerParamList = {
   Tabs: { name: string };
-  Profile: { name: string };
+  Profile: ProfileData;
   Setting: { name: string };
   About: { name: string };
 };

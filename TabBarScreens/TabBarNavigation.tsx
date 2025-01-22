@@ -39,7 +39,7 @@ const TabBarNavigation: React.FC<TabBarNavigationTypes> = ({ route }) => {
           tabBarActiveTintColor: '#99d98c',
           
         }}></Tab.Screen>
-      <Tab.Screen name="Profile" component={Profile} initialParams={{ name: user }} options={{
+      <Tab.Screen name="Profile" component={Profile} options={{
         tabBarIcon: (focus) => (
           <Ionicons name="person-circle-outline" size={30} color={focus.focused ? '#c8b6ff' : '#ffffff'}/>
         ), tabBarLabelStyle: { fontSize: 18, fontWeight: '500' },

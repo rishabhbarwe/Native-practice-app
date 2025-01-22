@@ -2,11 +2,13 @@ import { View, Text, FlatList, StyleSheet } from 'react-native'
 import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchData } from '../Components/API/EmojiApi';
+import { RootState } from '../Components/Slices/SliceTypes';
+import { AppDispatch } from '../Components/Store/store';
 
 
 
 const AboutUs = () => {
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch>();
 
 
   // dispatch(fetchData())
@@ -15,7 +17,7 @@ const AboutUs = () => {
     dispatch(fetchData())
   },[dispatch])
 
-const  { data, loading, error } = useSelector((state) => state.emojis);
+const  { data, loading, error } = useSelector((state:RootState) => state.emojis);
 
 
   // useEffect(() => {

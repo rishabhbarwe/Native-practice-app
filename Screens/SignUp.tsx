@@ -2,15 +2,21 @@ import { useState } from "react";
 import React from "react";
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { RootStackParamList } from "./Mainroute";
-
+import { useDispatch } from "react-redux";
+import storeTokenForSignUp from "../Components/Store/AsyncStorage";
+import CustomAlert from "./CustomAlert";
 
 import { Alert, ScrollView, SafeAreaView, View, Text, StyleSheet, TextInput, ImageBackground, TouchableOpacity, TouchableWithoutFeedback, Image } from "react-native"
+
 
 const image = { uri: 'https://marketplace.canva.com/EAGIenJ__Xk/1/0/1131w/canva-brown-watercolor-floral-aesthetic-background-document-a4-svsYZ2xRFIs.jpg' }
 
 const hide = require('../assets/hide.png')
 
 const show = require('../assets/view.png')
+
+
+
 
 // type signupType = {
 //   navigation : {
@@ -28,6 +34,21 @@ const SignUp: React.FC<signupType> = ({ navigation }) => {
   const [check, checkPass] = useState('');
   const [showPassword, setShowPassword] = useState(false);
 
+  const dispatch = useDispatch();
+  
+
+  const [alertVisible,setalertVisible] = useState(false);
+  const [message,setMessage] = useState('')
+
+
+
+  const showAlert = ()=>{
+    setalertVisible(true);
+  }
+
+  const hideAlert = ()=>{
+    setalertVisible(false);
+  }
 
   function handlePass() {
 
@@ -47,30 +68,62 @@ const SignUp: React.FC<signupType> = ({ navigation }) => {
   function handleSubmit() {
 
     if (!name.trim()) {
-      Alert.alert("Name is required...")
+      //Alert.alert("Name is required...")
+      setMessage("Name is required...")
+      showAlert();
     }
     else if (!username.trim()) {
-      Alert.alert("Username is required...")
+      //Alert.alert("Username is required...")
+      setMessage("Username is required...")
+      showAlert()
     }
     else if (!password.trim()) {
-      Alert.alert("Password is required...")
+      //Alert.alert("Password is required...")
+      setMessage("Password is required...")
+      showAlert()
     }
     else if (!email.trim()) {
-      Alert.alert("Email is required...")
+      //Alert.alert("Email is required...")
+      setMessage("Email is required...")
+      showAlert()
     }
     else {
       // Alert.alert(`${name} your data is submitted successfully.`)
+
+      
+      
+      const formData = {
+        name : name,
+        username : username,
+        password : password,
+        email : email,
+      }
+
+      
+       
+      storeTokenForSignUp(formData,dispatch);
+
       setName('')
       setUsername('')
       setPassword('')
       setEmail('')
       checkPass('')
+      
+      setMessage("Registration done successfully...")
+      showAlert()
+      setTimeout(()=>{
+        hideAlert()
+      },1500)
 
-      navigation.navigate("Login", {
-        username: username,
-        password: password,
-        name: name,
-      });
+
+       
+      setTimeout(()=>{
+        navigation.navigate("Login", {
+          username: username,
+          password: password,
+          name: name,
+        });
+      },2000)
     }
 
     // console.log("Name : ", name)
@@ -92,6 +145,7 @@ const SignUp: React.FC<signupType> = ({ navigation }) => {
 
     <ScrollView>
       <View style={styles.body}>
+        <CustomAlert visible={alertVisible} message={message} onClose={hideAlert}/>
         <ImageBackground source={image} style={styles.background} resizeMode="cover" >
 
 
@@ -217,7 +271,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: '800',
     position: 'absolute',
-    top: 305,
+    top: 310,
     left: 210,
 
   },
@@ -238,7 +292,8 @@ const styles = StyleSheet.create({
   header: {
     fontSize: 28,
     color: "#003049",
-    fontWeight: '700'
+    fontWeight: '700',
+    letterSpacing : 0.5,
   },
 
   subheader: {
@@ -259,12 +314,14 @@ const styles = StyleSheet.create({
 
   input: {
     backgroundColor: "#f7ede2",
-    color: '#2a2a2a',
+    color: '#333',
     width: 300,
     borderBottomWidth: 4,
     borderRadius: 10,
     borderColor: "#003049",
-    fontSize: 18,
+    fontSize: 20,
+    fontWeight : 'bold',
+    letterSpacing : 0.5,
     marginBottom: 25,
     paddingLeft: 10,
 
@@ -296,7 +353,7 @@ const styles = StyleSheet.create({
     textDecorationLine: 'underline',
     textDecorationStyle: 'solid',
     color: "#003049",
-    fontWeight: '500'
+    fontWeight: 'bold'
   },
 
   strong: {

@@ -90,8 +90,18 @@ const userDetails = [
   }
 ];
 
+export type ProfileData =  {
+  id: number;
+  name: string;
+  email: string;
+  phone: string;
+  address: string;
+  profilePicture: any; 
+}
 
-const Profile = () => {
+
+
+const Profile: React.FC<ProfileData>= () => {
   return (
     <>
       <View style={styles.header}>
@@ -122,4 +132,5 @@ const styles = StyleSheet.create({
   }
 })
 
-export default Profile
+export default Profile;
+

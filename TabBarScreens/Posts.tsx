@@ -1,21 +1,26 @@
-import { View, Text, Image ,FlatList, StyleSheet, ActivityIndicator} from 'react-native';
+import { View, Text, Image, FlatList, StyleSheet, ActivityIndicator } from 'react-native';
 import React, { useEffect } from 'react';
 import getData from '../Components/API/RandomApi';
 import { useDispatch, useSelector } from 'react-redux';
+import { AppDispatch } from '../Components/Store/store';
 
 
 const Posts = () => {
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch>();
+  
 
   useEffect(() => {
     dispatch(getData());
   }, [dispatch]);
 
-  const {data ,loading, error} = useSelector((state) => state.random);
 
-  useEffect(() => {
-    console.log(data);
-  }, [data]);
+
+
+  const { data, loading, error } = useSelector((state) => state.random);
+
+  // useEffect(() => {
+  //   console.log(data);
+  // }, [data]);
 
   // Check if data and data.urls are available
   //const imageUrl = data?.urls?.regular;
@@ -27,8 +32,8 @@ const Posts = () => {
         <Text style={styles.loadingText}>Loading...</Text>
         <ActivityIndicator size='large' color="#555" />
       </View>
-      
-      
+
+
 
     );
   }
@@ -47,38 +52,31 @@ const Posts = () => {
 
   return (
     <View style={styles.container}>
-      
-        
-        <FlatList 
+
+
+      <FlatList
         data={data}
-        renderItem={({item}) => (
-         <View style={styles.itemContainer}>
-           <Image source={{uri : item?.urls?.regular}} style={styles.images}></Image>
-         
-         </View>
+        renderItem={({ item }) => (
+          <View style={styles.itemContainer}>
+            <Image source={{ uri: item?.urls?.regular }} style={styles.images}></Image>
+
+          </View>
         )}
         horizontal={false}
         //numColumns={3}
-        
+
         keyExtractor={item => item.id}
         contentContainerStyle={styles.flatListContainer}
         showsHorizontalScrollIndicator={false}
-        
-        ></FlatList>
 
-
-      
-      
-      
-      
-      
+      ></FlatList>
     </View>
   );
-  
+
 };
 
 const styles = StyleSheet.create({
-  itemContainer : {
+  itemContainer: {
     marginRight: 0, // Space between items
     // borderRadius: 12, // Rounded corners for items
     // overflow: 'hidden', // Make sure the images respect the rounded corners
@@ -87,42 +85,42 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.1,
     shadowRadius: 6,
-    elevation: 5, 
-    marginBottom : 0
- 
-  },
-  flatListContainer : {
-      paddingHorizontal : 0,
-  },
-  images : {
-      width : 350,
-      height : 500,
-      borderWidth : 8,
-      borderColor : '#fff',
-      borderRadius : 10,
-       
-      margin : 10,
-      shadowOffset : {width : 0 ,height : 4},
-      shadowColor : '#000000',
-      shadowOpacity : 0.1,
-      shadowRadius : 50,
-      elevation : 10
+    elevation: 5,
+    marginBottom: 0
 
   },
-   
-  container : {
-    marginTop : 50,
-    backgroundColor : '#bde0fe',
-    padding : 10,
-    
+  flatListContainer: {
+    paddingHorizontal: 0,
+  },
+  images: {
+    width: 350,
+    height: 500,
+    borderWidth: 8,
+    borderColor: '#fff',
+    borderRadius: 10,
+
+    margin: 10,
+    shadowOffset: { width: 0, height: 4 },
+    shadowColor: '#000000',
+    shadowOpacity: 0.1,
+    shadowRadius: 50,
+    elevation: 10
+
+  },
+
+  container: {
+    marginTop: 50,
+    backgroundColor: '#bde0fe',
+    padding: 10,
+
   },
   loadingContainer: {
     flex: 1,
-    flexDirection : 'row',
+    flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: '#c8b6ff',
-    
+
   },
   loadingText: {
     fontSize: 30,
@@ -140,7 +138,7 @@ const styles = StyleSheet.create({
     color: 'red',
     textAlign: 'center',
   },
-  
+
 })
 
 export default Posts;
