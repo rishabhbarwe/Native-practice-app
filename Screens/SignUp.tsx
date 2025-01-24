@@ -5,24 +5,21 @@ import { RootStackParamList } from "./Mainroute";
 import { useDispatch } from "react-redux";
 import storeTokenForSignUp from "../Components/Store/AsyncStorage";
 import CustomAlert from "./CustomAlert";
-
+import LoadingComponent from "../Components/LoadingComponent";
 import { Alert, ScrollView, SafeAreaView, View, Text, StyleSheet, TextInput, ImageBackground, TouchableOpacity, TouchableWithoutFeedback, Image } from "react-native"
-
+import CameraPermissions from '../Components/Permissions';
 
 const image = { uri: 'https://marketplace.canva.com/EAGIenJ__Xk/1/0/1131w/canva-brown-watercolor-floral-aesthetic-background-document-a4-svsYZ2xRFIs.jpg' }
 
-const hide = require('../assets/hide.png')
+const hide = require('../assets/hide.png');
 
-const show = require('../assets/view.png')
+const show = require('../assets/view.png');
+
+const photo = require('../assets/image.png');
+
+const random = require('../assets/random.jpeg')
 
 
-
-
-// type signupType = {
-//   navigation : {
-//      navigate : (sreen : string, params?: any)=>void;
-//   };
-// }
 
 type signupType = NativeStackScreenProps<RootStackParamList, 'Register'>;
 const SignUp: React.FC<signupType> = ({ navigation }) => {
@@ -33,21 +30,32 @@ const SignUp: React.FC<signupType> = ({ navigation }) => {
   const [email, setEmail] = useState('');
   const [check, checkPass] = useState('');
   const [showPassword, setShowPassword] = useState(false);
+  const [showloading, setShowloading] = useState(false);
+  const [message, setMessage] = useState('')
+
 
   const dispatch = useDispatch();
-  
-
-  const [alertVisible,setalertVisible] = useState(false);
-  const [message,setMessage] = useState('')
 
 
+  const [alertVisible, setalertVisible] = useState(false);
 
-  const showAlert = ()=>{
+
+
+
+  const showAlert = () => {
     setalertVisible(true);
   }
 
-  const hideAlert = ()=>{
+  const hideAlert = () => {
     setalertVisible(false);
+  }
+
+  const loading = () => {
+    setShowloading(true);
+  }
+
+  const unloading = () => {
+    setShowloading(false);
   }
 
   function handlePass() {
@@ -58,11 +66,29 @@ const SignUp: React.FC<signupType> = ({ navigation }) => {
     }
     else if (password.length < 6) {
       checkPass("Weak password");
-
+      
     } else {
       checkPass("Medium password")
     }
   }
+
+
+  const [profileuri, setProfileuri] = useState("");
+
+  async function handleImage() {
+    const uri = await CameraPermissions();
+    if (uri) {
+      setProfileuri(uri);
+      console.log('Image URI:', uri);
+      setMessage("Profile image uploaded...")
+      showAlert();
+    } else {
+      console.log('No image selected.');
+    }
+
+  }
+
+
 
 
   function handleSubmit() {
@@ -87,43 +113,59 @@ const SignUp: React.FC<signupType> = ({ navigation }) => {
       setMessage("Email is required...")
       showAlert()
     }
+    else if(!profileuri){
+      setMessage("Profile image is required...")
+      showAlert()
+    }
     else {
       // Alert.alert(`${name} your data is submitted successfully.`)
 
-      
-      
+
+
+
       const formData = {
-        name : name,
-        username : username,
-        password : password,
-        email : email,
+        name: name,
+        username: username,
+        password: password,
+        email: email,
+        image: profileuri,
       }
 
-      
-       
-      storeTokenForSignUp(formData,dispatch);
+      console.log("Formdata : ", formData);
 
-      setName('')
-      setUsername('')
-      setPassword('')
-      setEmail('')
-      checkPass('')
-      
+
+
+      storeTokenForSignUp(formData, dispatch);
+
+
+      // setMessage("Registration done successfully...")
+      // showAlert()
+      // setTimeout(()=>{
+      //   hideAlert()
+      // },1500)
       setMessage("Registration done successfully...")
-      showAlert()
+      loading();
+      
       setTimeout(()=>{
-        hideAlert()
-      },1500)
+        setShowloading(false);
+      },1000)
 
-
-       
-      setTimeout(()=>{
+      setTimeout(() => {
         navigation.navigate("Login", {
           username: username,
           password: password,
           name: name,
         });
-      },2000)
+      }, 1000)
+
+      setTimeout(() => {
+        setName('')
+        setUsername('')
+        setPassword('')
+        setEmail('')
+        checkPass('')
+      }, 1000)
+
     }
 
     // console.log("Name : ", name)
@@ -141,106 +183,138 @@ const SignUp: React.FC<signupType> = ({ navigation }) => {
     navigation.navigate("Login", { username, password, name })
   }
   return (
+    <>
+      {showloading && <LoadingComponent visible={showloading} onClose={unloading} message={message} />}
+      <ScrollView>
+        <View style={styles.body}>
+          <CustomAlert visible={alertVisible} message={message} onClose={hideAlert} />
+          <ImageBackground source={image} style={styles.background} resizeMode="cover" >
 
 
-    <ScrollView>
-      <View style={styles.body}>
-        <CustomAlert visible={alertVisible} message={message} onClose={hideAlert}/>
-        <ImageBackground source={image} style={styles.background} resizeMode="cover" >
 
+            <View style={styles.upper}>
+              <Text style={styles.header}>Register Page</Text>
 
+              <Text style={styles.subheader}>Please register to continue...</Text>
+            </View>
+            <View style={{
 
-          <View style={styles.upper}>
-            <Text style={styles.header}>Register Page</Text>
-
-            <Text style={styles.subheader}>Please register to continue...</Text>
-          </View>
-
-          <View style={styles.middle}>
-            <Text style={styles.text}>Full Name</Text>
-
-            <TouchableWithoutFeedback >
-              <TextInput
-
-                value={name}
-                style={styles.input}
-                placeholder="enter full name"
-                onChangeText={setName}>
-              </TextInput>
-            </TouchableWithoutFeedback>
-
-
-            <Text style={styles.text}>Username</Text>
-
-            <TouchableWithoutFeedback>
-              <TextInput
-
-                value={username}
-                style={styles.input}
-                placeholder="enter username"
-                onChangeText={setUsername}>
-              </TextInput>
-            </TouchableWithoutFeedback>
-
-
-            <Text style={styles.text}>Password</Text>
-
-            <TouchableWithoutFeedback>
-              <TextInput
-                keyboardType="default"
-                secureTextEntry={!showPassword}
-                value={password}
-                style={styles.input}
-                placeholder="enter password"
-                onChangeText={(text) => {
-                  setPassword(text);
-                  handlePass();
-                }}>
-              </TextInput>
-            </TouchableWithoutFeedback>
-
-            {/* <Text style={styles.under}>Password : {password}</Text> */}
-
-            <Text style={[styles.check,
-            check === "Strong password" && styles.strong,
-            check === "Weak password" && styles.weak,
-            check === "Medium password" && styles.medium]}>
+              flexDirection: 'column',
+              justifyContent: 'center',
+              alignItems: 'center',
               
-            {check}</Text>
+              width : '100%',
+             
 
-            <Text style={[styles.text, { marginLeft: -230 }]}>Email</Text>
+              
+            }}>
+              
+
+              <TouchableOpacity onPress={() => handleImage()}>
+                <Image source={photo} style={{ width: 60, height: 60, 
+                  alignSelf: 'center', tintColor: '#588157',
+                  borderWidth : 4,
+                  borderColor : '#888999',
+                  borderRadius : 20,
+                  backgroundColor : '#fff'
+                   }}></Image>
+
+              </TouchableOpacity>
+              <Text style={{
+                fontSize: 17,
+                fontWeight: '700',
+                marginBottom: 5,
+                color: "#003049",
+                marginLeft: 0
+              }}>Upload profile</Text>
+
+            </View>
+
+            <View style={styles.middle}>
+              <Text style={styles.text}>Full Name</Text>
+
+              <TouchableWithoutFeedback >
+                <TextInput
+
+                  value={name}
+                  style={styles.input}
+                  placeholder="enter full name"
+                  onChangeText={setName}>
+                </TextInput>
+              </TouchableWithoutFeedback>
 
 
-            <TouchableWithoutFeedback>
-              <TextInput
+              <Text style={styles.text}>Username</Text>
 
-                value={email}
-                style={styles.input}
-                placeholder="enter email"
-                onChangeText={setEmail}>
-              </TextInput>
-            </TouchableWithoutFeedback>
+              <TouchableWithoutFeedback>
+                <TextInput
 
-            <TouchableOpacity onPress={handleSubmit}>
-              <Text style={styles.button}>Submit</Text>
+                  value={username}
+                  style={styles.input}
+                  placeholder="enter username"
+                  onChangeText={setUsername}>
+                </TextInput>
+              </TouchableWithoutFeedback>
+
+
+              <Text style={styles.text}>Password</Text>
+
+              <TouchableWithoutFeedback>
+                <TextInput
+                  keyboardType="default"
+                  secureTextEntry={!showPassword}
+                  value={password}
+                  style={styles.input}
+                  placeholder="enter password"
+                  onChangeText={(text) => {
+                    setPassword(text);
+                    handlePass();
+                  }}>
+                </TextInput>
+              </TouchableWithoutFeedback>
+
+              {/* <Text style={styles.under}>Password : {password}</Text> */}
+
+              <Text style={[styles.check,
+              check === "Strong password" && styles.strong,
+              check === "Weak password" && styles.weak,
+              check === "Medium password" && styles.medium]}>
+
+                {check}</Text>
+
+              <Text style={[styles.text, { marginLeft: -230 }]}>Email</Text>
+
+
+              <TouchableWithoutFeedback>
+                <TextInput
+
+                  value={email}
+                  style={styles.input}
+                  placeholder="enter email"
+                  onChangeText={setEmail}>
+                </TextInput>
+              </TouchableWithoutFeedback>
+
+              <TouchableOpacity onPress={handleSubmit}>
+                <Text style={styles.button}>Submit</Text>
+              </TouchableOpacity>
+            </View>
+
+            <View style={styles.bottom}>
+              <Text style={styles.subheader}>Already have an account?
+                <TouchableWithoutFeedback onPress={handleLogin}>
+                  <Text style={styles.login}> Login</Text>
+                </TouchableWithoutFeedback></Text>
+            </View>
+
+            <TouchableOpacity onPress={handlepassImage}>
+              <Image source={showPassword ? show : hide} style={styles.image} ></Image>
             </TouchableOpacity>
-          </View>
 
-          <View style={styles.bottom}>
-            <Text style={styles.subheader}>Already have an account?
-              <TouchableWithoutFeedback onPress={handleLogin}>
-                <Text style={styles.login}> Login</Text>
-              </TouchableWithoutFeedback></Text>
-          </View>
-
-          <TouchableOpacity onPress={handlepassImage}>
-            <Image source={showPassword ? show : hide} style={styles.image} ></Image>
-          </TouchableOpacity>
-
-        </ImageBackground>
-      </View>
-    </ScrollView>
-
+          </ImageBackground>
+        </View>
+      </ScrollView>
+    </>
 
   )
 }
@@ -253,7 +327,7 @@ const styles = StyleSheet.create({
   },
 
   upper: {
-    marginBottom: 50,
+    marginBottom: 10,
     marginTop: 40,
     alignItems: 'center'
   },
@@ -278,14 +352,14 @@ const styles = StyleSheet.create({
 
   middle: {
     marginBottom: 10,
-    marginTop: 20,
+    marginTop: 5,
     alignItems: 'center'
 
   },
 
   bottom: {
     alignItems: 'center',
-    marginTop: 30,
+    marginTop: 10,
 
   },
 
@@ -293,7 +367,7 @@ const styles = StyleSheet.create({
     fontSize: 28,
     color: "#003049",
     fontWeight: '700',
-    letterSpacing : 0.5,
+    letterSpacing: 0.5,
   },
 
   subheader: {
@@ -320,8 +394,8 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     borderColor: "#003049",
     fontSize: 20,
-    fontWeight : 'bold',
-    letterSpacing : 0.5,
+    fontWeight: 'bold',
+    letterSpacing: 0.5,
     marginBottom: 25,
     paddingLeft: 10,
 
@@ -346,7 +420,7 @@ const styles = StyleSheet.create({
     height: 22,
     position: 'absolute',
     left: 315,
-    top: -283,
+    top: -265,
 
   },
   login: {

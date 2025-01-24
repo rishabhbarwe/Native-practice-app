@@ -8,13 +8,15 @@ import {
     TouchableWithoutFeedback,
     ImageBackground,
     Alert,
-    Modal
+    Modal,
+    Image
 } from 'react-native';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { RootStackParamList } from './Mainroute';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import CustomAlert from './CustomAlert';
+import LoadingComponent from '../Components/LoadingComponent';
 
 type LoginType = NativeStackScreenProps<RootStackParamList, 'Login'>;
 
@@ -34,6 +36,7 @@ const image = {
     uri: 'https://marketplace.canva.com/EAGIenJ__Xk/1/0/1131w/canva-brown-watercolor-floral-aesthetic-background-document-a4-svsYZ2xRFIs.jpg',
 };
 
+const random = require('../assets/random.jpeg')
 
 const Login: React.FC<LoginType> = ({ navigation, route }) => {
     //const { username, password, name } = route.params;
@@ -43,15 +46,59 @@ const Login: React.FC<LoginType> = ({ navigation, route }) => {
     const [loginusername, setUsername] = useState('');
     const [loginpassword, setPassword] = useState('');
     const [modalVisible, setmodalVisible] = useState(false);
-    const [message, setMessage] = useState("")
+    const [message, setMessage] = useState("");
 
-    const showAlert = ()=>{
+
+    const [showloading, setShowloading] = useState(false);
+
+
+
+
+    const loading = () => {
+        setShowloading(true);
+    }
+
+    const unloading = () => {
+        setShowloading(false);
+    }
+
+
+    const showAlert = () => {
         setmodalVisible(!modalVisible)
     }
 
-    const closeAlert = ()=>{
+    const closeAlert = () => {
         setmodalVisible(!modalVisible)
     }
+
+    const [storedImage, setStoredimage] = useState(false);
+    const [photo, setPhoto] = useState(random);
+    const getImage = () => {
+        AsyncStorage.getItem('userdata')
+            .then((storedData) => {
+                if (storedData) {
+                    try {
+                        const data = JSON.parse(storedData);
+                        const image = data.image;
+                        if (image) {
+                            setPhoto(image);
+                            setStoredimage(true);
+                        }
+                    }
+                    catch (e) {
+                        console.log('Error while getting photo : ', e);
+                    }
+                }
+            })
+    }
+    useEffect(() => {
+        getImage();
+    }, []);
+
+
+
+
+
 
 
     function handleLogin() {
@@ -67,13 +114,30 @@ const Login: React.FC<LoginType> = ({ navigation, route }) => {
                         const { username: storedUsername, password: storedPassword } =
                             JSON.parse(storedData);
 
+
                         if (
                             loginData.username === storedUsername &&
                             loginData.password === storedPassword
                         ) {
-                            setUsername('');
-                            setPassword('');
-                            navigation.navigate('Drawer', { name: storedUsername });
+
+
+
+                            setMessage("")
+                            loading();
+                            setTimeout(() => {
+                                setShowloading(false);
+                            }, 1000)
+
+                            setTimeout(() => {
+                                navigation.navigate('Drawer', { name: storedUsername });
+                            }, 1000)
+
+                            setTimeout(() => {
+                                setUsername('');
+                                setPassword('');
+                            }, 1000)
+
+
                         } else if (loginData.username !== storedUsername) {
                             setMessage('Username is incorrect...');
                             showAlert();
@@ -102,12 +166,13 @@ const Login: React.FC<LoginType> = ({ navigation, route }) => {
         navigation.navigate('Register');
     }
 
-    function handleForgetPass(){
+    function handleForgetPass() {
         navigation.navigate("Forget")
     }
     return (
         <View style={styles.body}>
             <CustomAlert visible={modalVisible} message={message} onClose={closeAlert} />
+            {showloading && <LoadingComponent visible={showloading} onClose={unloading} message={message} />}
             <ImageBackground source={image} resizeMode="cover" style={{ height: 780 }}>
                 <Text>
                     {/* Hello {route.params.name} your password is {route.params.password}  */}
@@ -116,6 +181,12 @@ const Login: React.FC<LoginType> = ({ navigation, route }) => {
                     <Text style={styles.header}>Login</Text>
                     <Text style={styles.subheader}>Please login to continue...</Text>
                 </View>
+                <Image source={storedImage ? { uri: photo } : random}
+                    style={{
+                        width: 100, height: 100,
+                        borderRadius: 50, alignSelf: 'center',
+                        marginTop: 10, borderWidth: 4, borderColor: '#999'
+                    }}></Image>
                 <View style={styles.middle}>
                     <Text style={styles.text}>Username</Text>
                     <TextInput
@@ -168,7 +239,7 @@ const styles = StyleSheet.create({
     },
     middle: {
         alignItems: 'center',
-        marginTop: 100,
+        marginTop: 10,
         fontSize: 22,
     },
     bottom: {
@@ -178,7 +249,7 @@ const styles = StyleSheet.create({
     register: {
         textDecorationLine: 'underline',
         textDecorationStyle: 'solid',
-        
+
         color: '#003049',
         fontWeight: 'bold',
     },
@@ -196,7 +267,7 @@ const styles = StyleSheet.create({
         fontSize: 28,
         color: '#003049',
         fontWeight: '700',
-        letterSpacing : 1,
+        letterSpacing: 1,
     },
 
     subheader: {
@@ -221,17 +292,17 @@ const styles = StyleSheet.create({
         marginBottom: 25,
         paddingLeft: 10,
         fontSize: 20,
-        fontWeight : 'bold',
-        letterSpacing : 0.5,
+        fontWeight: 'bold',
+        letterSpacing: 0.5,
     },
-    forgetpass : {
-        fontSize : 18,
-        fontWeight : 'bold',
-        color : '#780000',
-        textAlign : 'center',
-        marginLeft : 15,
-        marginTop : 20,
-        textDecorationLine : 'underline'
+    forgetpass: {
+        fontSize: 18,
+        fontWeight: 'bold',
+        color: '#780000',
+        textAlign: 'center',
+        marginLeft: 15,
+        marginTop: 20,
+        textDecorationLine: 'underline'
     }
 });
 export default Login;

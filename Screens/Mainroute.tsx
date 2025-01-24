@@ -27,7 +27,7 @@ export type RootStackParamList = {
     "Drawer" : {name : string};
     "Forget" : any;
     "Otplogin" : any;
-    'Home' : any
+   
   
 };
 const Mainroute: React.FC = () => {
@@ -40,7 +40,7 @@ const Mainroute: React.FC = () => {
                 <Stack.Screen name="Forget" component={ForgetPasswordScreen}></Stack.Screen>
                 <Stack.Screen name="Otplogin" component={LoginwithOTP}></Stack.Screen>
                <Stack.Screen name="Drawer" component={DrawerNavigations} />
-               <Stack.Screen name="Home" component={HomeScreen}></Stack.Screen>
+              
                
             </Stack.Navigator>
         </NavigationContainer>

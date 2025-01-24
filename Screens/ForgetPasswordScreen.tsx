@@ -11,7 +11,7 @@ import { string } from 'prop-types';
 
 type ForgetPasswordScreenType = NativeStackScreenProps<RootStackParamList, 'Forget'>
 const ForgetPasswordScreen:React.FC<ForgetPasswordScreenType> = ({navigation}) => {
-    const otp = String(generateOTP());
+    const otp = generateOTP();
 
     const [email, setEmail] = useState('')
     const [visible, setVisible] = useState(false);
@@ -20,6 +20,7 @@ const ForgetPasswordScreen:React.FC<ForgetPasswordScreenType> = ({navigation}) =
     const [savedOTP, setSaved] = useState(false);
     const [getOTP, setGetSaved] = useState(false);
     const [asyncOtp, setasyncOtp] = useState(false);
+    const [textcolor ,setTextcolor] = useState('red')
 
     const showAlert = () => {
         setVisible(true)
@@ -44,9 +45,12 @@ const ForgetPasswordScreen:React.FC<ForgetPasswordScreenType> = ({navigation}) =
           }
     }
     
+  
+
+
     useEffect(()=>{
         saveOTP(otp);
-    },[otp])
+    },[])
 
 
     const getOtp = async () => {
@@ -68,6 +72,16 @@ const ForgetPasswordScreen:React.FC<ForgetPasswordScreenType> = ({navigation}) =
     function handleLogin(){
          navigation.navigate('Otplogin');
     }
+
+    useEffect(()=>{
+        const colorInterval = setInterval(()=>{
+             setTextcolor(((previousColor) => previousColor === 'red' ? 'white' : 'red'))
+        },500)
+
+        return () => {
+            clearInterval(colorInterval);
+          };
+    },[])
 
 
 
@@ -115,6 +129,7 @@ const ForgetPasswordScreen:React.FC<ForgetPasswordScreenType> = ({navigation}) =
             <View style={styles.box}>
                 <Text style={styles.text}>Enter registered email:</Text>
                 <TextInput
+                    placeholder='enter email'
                     style={styles.input}
                     onChangeText={(text) => {
                         setEmail(text);
@@ -125,7 +140,10 @@ const ForgetPasswordScreen:React.FC<ForgetPasswordScreenType> = ({navigation}) =
                 </TouchableOpacity>
             </View>
             {toLogin && <TouchableOpacity onPress={handleLogin} style={styles.redirect}>
-                <Text style={styles.text}>Click here to redirect to login!</Text>
+                <Text 
+                style={[styles.redirectText,
+                    textcolor && {color : textcolor}
+                ]}>Click here to redirect to login!</Text>
             </TouchableOpacity> }
             
         </View>
@@ -189,8 +207,13 @@ const styles = StyleSheet.create({
     redirect : {
         marginTop : 40,
         marginLeft : 60,
-        
-        
+    },
+    redirectText : {
+        fontSize: 22,
+        fontWeight: '700',
+        marginBottom: 10,
+        marginLeft: -65,
+        textDecorationLine : 'underline'
     }
     // ruler : {
     //     width: '100%',

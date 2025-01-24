@@ -9,6 +9,7 @@ import { RootStackParamList } from './Mainroute';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import Login from './Login';
 import TabBarNavigation from '../TabBarScreens/TabBarNavigation';
+import { Screen } from 'react-native-screens';
 
 
 type ForgetPasswordScreenType = NativeStackScreenProps<RootStackParamList, 'Otplogin'>
@@ -61,7 +62,8 @@ const LoginwithOTP: React.FC<ForgetPasswordScreenType> = ({ navigation }) => {
             }, 1500)
 
             setTimeout(() => {
-                navigation.navigate('Home',{name : 'user'});
+                navigation.navigate('Drawer',{name : 'hello'});
+
 
             }, 2000)
         }
@@ -110,7 +112,7 @@ const styles = StyleSheet.create({
         fontWeight: '700',
         marginBottom: 10,
         color: '#7209b7',
-        marginLeft: -65
+        marginLeft: -180
     },
     input: {
         backgroundColor: '#f7ede2',

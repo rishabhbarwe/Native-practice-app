@@ -1,7 +1,8 @@
 import { View, Text } from 'react-native'
 import React from 'react';
 import { useDispatch,useSelector } from 'react-redux';
-import { addLike ,removeLike } from './Slices/Likeslice';
+import { addLike ,removeLike } from './Slices/Likeslice'
+import { AppDispatch } from './Store/store';
 
 const Header = () => {
   const globalLikeCount = useSelector((state)=> state.like.globalLikeCount)

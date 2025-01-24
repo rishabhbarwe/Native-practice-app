@@ -2,8 +2,9 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 
 import { setSignUpData } from "../Slices/AuthenticationSlice";
 
+const random = require('../assets/random.jpeg')
 
-const storeTokenForSignUp = async (userdata: { name: string; username: string; password: string; email: string; }, dispatch: any) => {
+const storeTokenForSignUp = async (userdata: { name: string; username: string; password: string; email: string; image : string }, dispatch: any) => {
     try {
 
         //console.log(userdata);

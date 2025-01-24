@@ -15,7 +15,7 @@ export type TabParamList = {
   Profile: { name: string };
   Setting: { name: string };
   About: { name: string };
-  posts : {name : string}
+  posts : {name : string};
 };
 
 
@@ -25,7 +25,7 @@ type TabBarNavigationTypes = DrawerScreenProps<DrawerParamList, "Tabs">
 
 const TabBarNavigation: React.FC<TabBarNavigationTypes> = ({ route }) => {
 
-  const user = route.params.name
+  const user = route.params.name;
 
   return (
     <Tab.Navigator screenOptions={{ headerShown: false ,tabBarStyle : { height: 60 ,backgroundColor : "#000000",paddingTop : 0,borderTopWidth : 1,borderTopColor : '#FFFFFF'},tabBarIconStyle : {marginBottom : 1}}}>

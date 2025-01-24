@@ -2,6 +2,8 @@ import { createSlice,createAsyncThunk } from "@reduxjs/toolkit";
 
 import { fetchData } from "../API/EmojiApi";
 
+import { RootState } from "./SliceTypes";
+
 
 
 const emojisSlice = createSlice({
@@ -28,5 +30,6 @@ const emojisSlice = createSlice({
     },
 
 });
+
 
 export default emojisSlice.reducer;

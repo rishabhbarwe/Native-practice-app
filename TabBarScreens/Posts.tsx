@@ -1,11 +1,14 @@
-import { View, Text, Image, FlatList, StyleSheet, ActivityIndicator } from 'react-native';
+import { View, Text, Image, FlatList, StyleSheet, ActivityIndicator,TouchableWithoutFeedback } from 'react-native';
 import React, { useEffect } from 'react';
 import getData from '../Components/API/RandomApi';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch } from '../Components/Store/store';
 
+const profilePic = require('../assets/profile.png');
 
-const Posts = () => {
+
+
+const Posts = ({navigation} : any) => {
   const dispatch = useDispatch<AppDispatch>();
   
 
@@ -51,7 +54,15 @@ const Posts = () => {
   }
 
   return (
+    <>
+    <View style={styles.navigationBar}>
+                <TouchableWithoutFeedback onPress={() => navigation.openDrawer()}>
+                    <Image source={profilePic} style={styles.profile}></Image>
+                </TouchableWithoutFeedback>
+                <Text style={styles.barText}>Home Screen</Text>
+            </View>
     <View style={styles.container}>
+      
 
 
       <FlatList
@@ -71,6 +82,8 @@ const Posts = () => {
 
       ></FlatList>
     </View>
+
+    </>
   );
 
 };
@@ -109,8 +122,8 @@ const styles = StyleSheet.create({
   },
 
   container: {
-    marginTop: 50,
-    backgroundColor: '#bde0fe',
+    marginTop: 0,
+    backgroundColor: '#c8b6ff',
     padding: 10,
 
   },
@@ -138,6 +151,39 @@ const styles = StyleSheet.create({
     color: 'red',
     textAlign: 'center',
   },
+  image: {
+    margin: 20,
+    alignItems: 'center',
+    width: 350,
+    height: 250,
+
+
+},
+
+profile: {
+    width: 40,
+    height: 40,
+    marginRight: 10,
+
+},
+barText: {
+    color: '#c8b6ff',
+    fontSize: 22,
+    marginLeft: 5,
+    fontWeight : 'bold'
+},
+navigationBar: {
+    display: 'flex',
+    flexDirection: 'row',
+    width : '100%',
+    height: 70,
+    padding: 15,
+    
+    paddingTop: 15,
+    backgroundColor : '#000000',
+    borderBottomWidth : 2,
+    borderBottomColor : '#ffffff'
+},
 
 })
 

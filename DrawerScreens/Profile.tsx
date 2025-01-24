@@ -3,6 +3,7 @@ import React from 'react'
 import TabBarNavigation from '../TabBarScreens/TabBarNavigation'
 import ProfileCards from '../Components/ProfileCards';
 import Header from '../Components/Header';
+import { BottomTabBarProps } from '@react-navigation/bottom-tabs';
 
 
 
@@ -90,18 +91,12 @@ const userDetails = [
   }
 ];
 
-export type ProfileData =  {
-  id: number;
-  name: string;
-  email: string;
-  phone: string;
-  address: string;
-  profilePicture: any; 
-}
 
 
 
-const Profile: React.FC<ProfileData>= () => {
+
+
+const Profile = () => {
   return (
     <>
       <View style={styles.header}>
