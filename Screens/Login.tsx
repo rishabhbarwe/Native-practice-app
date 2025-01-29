@@ -120,8 +120,6 @@ const Login: React.FC<LoginType> = ({ navigation, route }) => {
                             loginData.password === storedPassword
                         ) {
 
-
-
                             setMessage("")
                             loading();
                             setTimeout(() => {

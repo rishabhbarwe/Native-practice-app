@@ -323,7 +323,7 @@ const styles = StyleSheet.create({
 
   body: {
     backgroundColor: '#f8f9fa',
-    paddingBottom: 20,
+    //paddingBottom: 20,
   },
 
   upper: {

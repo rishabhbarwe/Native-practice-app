@@ -8,36 +8,41 @@ import { RootState } from '../Components/Slices/SliceTypes';
 
 
 const Settings = () => {
-    const users = useSelector((state:RootState) => state.users.users);
-    const [length, setLength] = useState(0)
+    // const users = useSelector((state:RootState) => state.users.users);
+    // const [length, setLength] = useState(0)
 
-    useEffect(() => {
-        // Whenever users change, log the update or trigger actions if needed
-        let length = users.length;
-        setLength(length)
+    // useEffect(() => {
+    //     // Whenever users change, log the update or trigger actions if needed
+    //     let length = users.length;
+    //     setLength(length)
 
-        console.log(length);
-    }, [users]);
+    //     console.log(length);
+    // }, [users]);
 
     return (
-        <View style={styles.screen}>
-            <Text style={styles.heading}>Added Users: {length}</Text>
-            <FlatList
-                data={users}
-                keyExtractor={item => item.id.toString()}
-                renderItem={({ item }) => (
-                    <View style={styles.card}>
-                        <Image source={item.profilePicture} style={styles.pp}></Image>
-                        <View style={styles.outer}>
-                            <Text style={styles.text}>Email : {item.email}</Text>
-                            <Text style={styles.text}>Name : {item.name}</Text>
-                            <Text style={styles.text}>Phone : {item.phone}</Text>
-                            <Text style={styles.text}>Address : {item.address}</Text>
-                            <View style={styles.ruler} />
-                        </View>
-                    </View>
-                )}
-            />
+        // <View style={styles.screen}>
+        //     <Text style={styles.heading}>Added Users: {length}</Text>
+        //     <FlatList
+        //         data={users}
+        //         keyExtractor={item => item.id.toString()}
+        //         renderItem={({ item }) => (
+        //             <View style={styles.card}>
+        //                 <Image source={item.profilePicture} style={styles.pp}></Image>
+        //                 <View style={styles.outer}>
+        //                     <Text style={styles.text}>Email : {item.email}</Text>
+        //                     <Text style={styles.text}>Name : {item.name}</Text>
+        //                     <Text style={styles.text}>Phone : {item.phone}</Text>
+        //                     <Text style={styles.text}>Address : {item.address}</Text>
+        //                     <View style={styles.ruler} />
+        //                 </View>
+        //             </View>
+        //         )}
+        //     />
+        // </View>
+        <View>
+            <Text style={styles.text}>
+                Setting Screen.
+            </Text>
         </View>
     );
 };

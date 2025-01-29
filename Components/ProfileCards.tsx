@@ -7,11 +7,11 @@ const right = require('../assets/correct.png')
 import { useDispatch, UseDispatch, useSelector } from 'react-redux';
 import { addLike, removeLike } from './Slices/Likeslice';
 import { addUser, deleteUser } from './Slices/Usersslice';
-import { ProfileData } from '../DrawerScreens/Profile'
+//import { ProfileData } from '../DrawerScreens/Profile'
 
 
 type profileCards = {
-    data : ProfileData
+    data : any
 }
 
 const ProfileCards:React.FC<profileCards> = ({ data  }) => {

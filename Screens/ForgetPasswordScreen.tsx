@@ -54,6 +54,9 @@ const ForgetPasswordScreen:React.FC<ForgetPasswordScreenType> = ({navigation}) =
 
 
     const getOtp = async () => {
+         
+
+
         if(!getOTP){
             try {
                 const storedOtp = await AsyncStorage.getItem('otp');

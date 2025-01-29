@@ -82,15 +82,28 @@ const CustomDrawer = (props: any) => {
   }
 
   async function getUser() {
-    try {
-      const data = await AsyncStorage.getItem('userdata');
-      const jsonData = await JSON.parse(data);
-      setUser(jsonData.name)
-      setEmail(jsonData.email)
-    }
-    catch (e) {
-      console.error("Error while getting name : ", e);
-    }
+
+    await AsyncStorage.getItem('userdata')
+    .then(async (storedData)=>{
+      if(storedData){
+        try {
+              
+          const jsonData = await JSON.parse(storedData);
+          setUser(jsonData.name)
+          setEmail(jsonData.email)
+
+          // const data = await AsyncStorage.getItem('userdata');
+          // const jsonData = await JSON.parse(data);
+          // setUser(jsonData.name)
+          // setEmail(jsonData.email)
+        }
+        catch (e) {
+          console.error("Error while getting name : ", e);
+        }
+
+      }
+    })
+    
   }
 
   useEffect(() => {

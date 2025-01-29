@@ -9,6 +9,7 @@ const openGallery = () => {
   return new Promise((resolve,reject)=>{
     launchImageLibrary({
       mediaType: 'photo',
+      allowEditing : true,
     }, (response) => {
       if (response.didCancel) {
         reject("User cancelled image picker.");
